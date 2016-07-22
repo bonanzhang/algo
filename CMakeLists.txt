@@ -10,7 +10,6 @@ set(LIB_SRCS "${CMAKE_SOURCE_DIR}/src/qsort.cc")
 add_library(qsort SHARED ${LIB_SRCS})
 
 #test library with Coogle C++ Testing Framework
-enable_testing()
 include(ExternalProject)
 set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
 
@@ -31,6 +30,3 @@ add_dependencies(qsort_test googletest)
 
 #test executable is linked with the library produced above and the gtest lib
 target_link_libraries(qsort_test qsort gtest pthread)
-
-#do a test for ctest
-add_test(qsort_test qsort_test)
