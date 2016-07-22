@@ -1,32 +1,30 @@
+#include "qsort.h"
 long partition(int *a, long lo, long hi) {
-    int pivot;
+    int p;
     int temp;
-    int i;
-    int j;
-    pivot = a[lo];
-    i = lo - 1;
-    j = hi + 1;
-    while (1) {
-        do {
+    long i;
+    long j;
+    p = a[lo];
+    i = lo+1;
+    for (j = lo+1; j <= hi; j++) {
+        if (a[j] < p) {
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
             i++;
-        } while (a[i] < pivot);
-        do {
-            j--;
-        } while (a[j] > pivot);
-        if (i >= j) {
-            return j;
         }
-        temp = a[i];
-        a[i] = a[j];
-        a[j] = temp;
     }
+    temp = a[i-1];
+    a[i-1] = a[lo];
+    a[lo] = temp;
+    return i-1;
 }
 
 void quicksort_recurse(int *a, long lo, long hi) {
     long p;
-    if (lo < hi) {
+    if ((hi-lo) > 1) {
         p = partition(a, lo, hi);
-        quicksort_recurse(a, lo, p);
+        quicksort_recurse(a, lo, p-1);
         quicksort_recurse(a, p+1, hi);
     }
 }
