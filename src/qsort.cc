@@ -1,4 +1,4 @@
-#include "qsort.h"
+#include "sort.h"
 long partition(int *a, long lo, long hi) {
     int p;
     int temp;
