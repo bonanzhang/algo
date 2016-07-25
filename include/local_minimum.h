@@ -9,5 +9,5 @@
 //a=1, b=2, d=1, which is case 2 of the Master Theorem (1 < 2^1)
 #include <stdio.h>
 #include <stdlib.h>
-void find_local_minimum(int *a, long n, long *r, long *c);
+void find_local_minimum(int *a, long n, long &r, long &c);
 #endif // LOCAL_MINIMUM_H

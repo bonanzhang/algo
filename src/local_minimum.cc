@@ -10,17 +10,12 @@ int is_local_minimum(int *a, long n, long r, long c) {
     good_right = c < n-1 ? a[r*n+c] < a[r*n+(c+1)] : 1;
     return good_up && good_down && good_left && good_right;
 }
-void find_local_minimum(int *a, long n, long *r, long *c) {
-    long i;
-    long cur_r;
-    long cur_c;
-    for (i=0; i<n*n; i++) {
-        cur_r = i/n;
-        cur_c = i%n;
-        if (is_local_minimum(a, n, cur_r, cur_c)) {
+void find_local_minimum(int *a, long n, long &r, long &c) {
+    for (long i=0; i<n*n; i++) {
+        r = i/n;
+        c = i%n;
+        if (is_local_minimum(a, n, r, c)) {
             break;
         }
     }
-    *r = cur_r;
-    *c = cur_c;
 }
