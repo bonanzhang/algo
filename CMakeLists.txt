@@ -9,10 +9,12 @@ set(SORT_LIB_SRCS "${CMAKE_SOURCE_DIR}/src/qsort.cc"
                   "${CMAKE_SOURCE_DIR}/src/merge_sort.cc")
 #build a shared library for the sort algorithms
 add_library(sort SHARED ${SORT_LIB_SRCS})
-
 #build a shared library for the select algorithms
 set(SELECT_LIB_SRCS "${CMAKE_SOURCE_DIR}/src/local_minimum.cc")
 add_library(select SHARED ${SELECT_LIB_SRCS})
+#build a shared library for the dynamic list data structure
+set(DYNAMIC_LIST_LIB_SRCS "${CMAKE_SOURCE_DIR}/src/dynamic_list.cc")
+add_library(dynamic_list SHARED ${DYNAMIC_LIST_LIB_SRCS})
 
 #test library with Coogle C++ Testing Framework
 include(ExternalProject)
@@ -45,3 +47,15 @@ add_dependencies(select_test googletest)
 
 #select test executable is linked with the library produced above and the gtest lib
 target_link_libraries(select_test select gtest pthread)
+
+#testing source code for the dynamic list data structure
+set(DYNAMIC_LIST_TEST_SRCS "${CMAKE_SOURCE_DIR}/test/dynamic_list_test.cc")
+
+#dynamic list test executable
+add_executable(dynamic_list_test ${DYNAMIC_LIST_TEST_SRCS})
+add_dependencies(dynamic_list_test googletest)
+
+#dynamic list test executable is linked with the library produced above and the gtest lib
+target_link_libraries(dynamic_list_test dynamic_list gtest pthread)
+
+
