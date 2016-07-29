@@ -1,16 +1,16 @@
 #include "graph.h"
 //Edge functions
 Edge::Edge() {
-    vertices_ = std::make_pair<Vertex *, Vertex*>(NULL, NULL);
 }
 Edge::Edge(Vertex *v1, Vertex *v2) {
-    vertices_ = std::make_pair<Vertex *, Vertex *>(v1, v2);
+    vertices_.push_back(v1);
+    vertices_.push_back(v2);
 }
 Vertex * Edge::getFirstVertex() {
-    return vertices_.first;
+    return vertices_.front();
 }
 Vertex * Edge::getSecondVertex() {
-    return vertices_.second;
+    return vertices_.back();
 }
 Vertex::Vertex() {
     label_.clear();

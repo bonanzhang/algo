@@ -17,7 +17,7 @@ class Vertex {
 };
 class Edge {
     private:
-        std::pair<Vertex *, Vertex *> vertices_;
+        std::list<Vertex *> vertices_;
     public:
         Edge();
         Edge(Vertex *v1, Vertex *v2);
