@@ -5,14 +5,14 @@
 #include <iostream>
 class Vertex {
     private:
-        std::list<int> label_;
+        std::string label_;
         std::list<Vertex *> adjacent_vertices_;
     public:
         Vertex();
-        Vertex(int label);
-        void addLabel(int label);
+        Vertex(std::string label);
+        void setLabel(std::string label);
+        std::string getLabel() const;
         void addConnection(Vertex *v);
-        std::string getLabelString() const;
         friend std::ostream& operator<<(std::ostream &os, const Vertex &v);
 };
 class Edge {
@@ -32,6 +32,9 @@ class Graph {
         Graph();
         void addVertex(Vertex *v);
         void addEdge(Edge *e);
+        //Karger's min cut algorithm contracts edges until there are only two vertices left
+        //so, obviously, these methods drastically change the data structure
+        void contract();
         int minCut();
         friend std::ostream& operator<<(std::ostream &os, const Graph &g);
 };

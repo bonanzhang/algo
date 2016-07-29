@@ -13,34 +13,27 @@ Vertex * Edge::getSecondVertex() {
     return vertices_.back();
 }
 Vertex::Vertex() {
-    label_.clear();
     adjacent_vertices_.clear();
 }
 //Vertex Functions
-Vertex::Vertex(int label) {
-    label_.push_back(label);
+Vertex::Vertex(std::string label) {
+    label_ = label;
     adjacent_vertices_.clear();
 }
-void Vertex::addLabel(int label) {
-    label_.push_back(label);
+void Vertex::setLabel(std::string label) {
+    label_ = label;
+}
+std::string Vertex::getLabel() const {
+    return label_;
 }
 void Vertex::addConnection(Vertex *v) {
     adjacent_vertices_.push_back(v);
 }
-std::string Vertex::getLabelString() const {
-    std::stringstream st;
-    st << "{";
-    for (std::list<int>::const_iterator it=label_.begin(); it != label_.end(); ++it) {
-        st << *it;
-    }
-    st << "}";
-    return st.str();
-}
 std::ostream & operator<<(std::ostream & os, const Vertex & v) {
-    os << "Vertex(" << v.getLabelString() << " ";
+    os << "Vertex(" << v.getLabel() << "-";
     for (std::list<Vertex *>::const_iterator it=v.adjacent_vertices_.begin(); it != v.adjacent_vertices_.end(); ++it) {
         Vertex * cur_v = *it;
-        os << cur_v->getLabelString();
+        os << (it == v.adjacent_vertices_.begin() ? "" : ",") << cur_v->getLabel();
     }
     os << ")";
     return os;
@@ -52,6 +45,10 @@ Graph::Graph() {
 }
 int Graph::minCut() {
     return 0;
+}
+void Graph::contract() {
+    int rand_edge_index = rand() % edges_.size();
+    std::cout << "randomly picked " << rand_edge_index << " between 0 and " << edges_.size()-1 << std::endl;
 }
 void Graph::addVertex(Vertex *v) {
     vertices_.push_back(v);
