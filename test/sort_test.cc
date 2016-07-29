@@ -15,7 +15,6 @@ TEST(MergeSortTest, HandlesSortedCase) {
     }
     EXPECT_EQ(sorted, 1);
 }
-
 TEST(MergeSortTest, HandlesEqualElementsCase) {
     int arr[] = {3,1,2,5,1,3,4,2};
     long i;
@@ -31,7 +30,6 @@ TEST(MergeSortTest, HandlesEqualElementsCase) {
     }
     EXPECT_EQ(sorted, 1);
 }
-
 TEST(MergeSortTest, HandlesCommonCase) {
     int arr[] = {7,8,1,3,5,2,4,6};
     long i;
@@ -47,7 +45,6 @@ TEST(MergeSortTest, HandlesCommonCase) {
     }
     EXPECT_EQ(sorted, 1);
 }
-
 TEST(QuickSortTest, HandlesSortedCase) {
     int arr[] = {1,2,3,4,5,6,7,8};
     long i;
@@ -63,7 +60,6 @@ TEST(QuickSortTest, HandlesSortedCase) {
     }
     EXPECT_EQ(sorted, 1);
 }
-
 TEST(QuickSortTest, HandlesEqualElementsCase) {
     int arr[] = {3,1,2,5,1,3,4,2};
     long i;
@@ -79,7 +75,6 @@ TEST(QuickSortTest, HandlesEqualElementsCase) {
     }
     EXPECT_EQ(sorted, 1);
 }
-
 TEST(QuickSortTest, HandlesCommonCase) {
     int arr[] = {7,8,1,3,5,2,4,6};
     long i;
@@ -95,7 +90,6 @@ TEST(QuickSortTest, HandlesCommonCase) {
     }
     EXPECT_EQ(sorted, 1);
 }
-
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

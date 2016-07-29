@@ -15,6 +15,9 @@ add_library(select SHARED ${SELECT_LIB_SRCS})
 #build a shared library for the dynamic list data structure
 set(DYNAMIC_LIST_LIB_SRCS "${CMAKE_SOURCE_DIR}/src/dynamic_list.cc")
 add_library(dynamic_list SHARED ${DYNAMIC_LIST_LIB_SRCS})
+#build a shared library for the graph data structure
+set(GRAPH_LIB_SRCS "${CMAKE_SOURCE_DIR}/src/graph.cc")
+add_library(graph SHARED ${GRAPH_LIB_SRCS})
 
 #test library with Coogle C++ Testing Framework
 include(ExternalProject)
@@ -28,34 +31,37 @@ ExternalProject_Add(googletest
 include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
 link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 
+#SORTING
 #testing source code for the sort algorithms
 set(SORT_TEST_SRCS "${CMAKE_SOURCE_DIR}/test/sort_test.cc")
-
 #sort test executable
 add_executable(sort_test ${SORT_TEST_SRCS})
 add_dependencies(sort_test googletest)
-
 #sort test executable is linked with the library produced above and the gtest lib
 target_link_libraries(sort_test sort gtest pthread)
-
+#LOCAL MINIMUM
 #testing source code for the select algorithms
 set(SELECT_TEST_SRCS "${CMAKE_SOURCE_DIR}/test/local_minimum_test.cc")
-
 #select test executable
 add_executable(select_test ${SELECT_TEST_SRCS})
 add_dependencies(select_test googletest)
-
 #select test executable is linked with the library produced above and the gtest lib
 target_link_libraries(select_test select gtest pthread)
-
+#DYNAMIC LIST
 #testing source code for the dynamic list data structure
 set(DYNAMIC_LIST_TEST_SRCS "${CMAKE_SOURCE_DIR}/test/dynamic_list_test.cc")
-
 #dynamic list test executable
 add_executable(dynamic_list_test ${DYNAMIC_LIST_TEST_SRCS})
 add_dependencies(dynamic_list_test googletest)
-
 #dynamic list test executable is linked with the library produced above and the gtest lib
 target_link_libraries(dynamic_list_test dynamic_list gtest pthread)
+#GRAPH
+#testing source code for the dynamic list data structure
+set(GRAPH_TEST_SRCS  "${CMAKE_SOURCE_DIR}/test/graph_test.cc")
+#graph test executable
+add_executable(graph_test ${GRAPH_TEST_SRCS})
+add_dependencies(graph_test googletest)
+#graph test executable is linked with the library produced above and the gtest lib
+target_link_libraries(graph_test graph gtest pthread)
 
 
