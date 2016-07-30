@@ -64,4 +64,7 @@ add_dependencies(graph_test googletest)
 #graph test executable is linked with the library produced above and the gtest lib
 target_link_libraries(graph_test graph gtest pthread)
 
-
+#SPECIFIC PROBLEM SOLVERS
+set(MIN_CUT_FINDER_SRCS "${CMAKE_SOURCE_DIR}/src/min_cut_finder")
+add_executable(min_cut_finder ${MIN_CUT_FINDER_SRCS})
+target_link_libraries(min_cut_finder graph)
