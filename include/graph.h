@@ -5,19 +5,19 @@
 #include <iostream>
 class Vertex {
     private:
-        std::list<int> label_;
+        std::string label_;
         std::list<Vertex *> adjacent_vertices_;
     public:
         Vertex();
-        Vertex(int label);
-        void addLabel(int label);
+        Vertex(std::string label);
+        void setLabel(std::string label);
+        std::string getLabel() const;
         void addConnection(Vertex *v);
-        std::string getLabelString() const;
         friend std::ostream& operator<<(std::ostream &os, const Vertex &v);
 };
 class Edge {
     private:
-        std::pair<Vertex *, Vertex *> vertices_;
+        std::list<Vertex *> vertices_;
     public:
         Edge();
         Edge(Vertex *v1, Vertex *v2);

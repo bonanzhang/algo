@@ -1,46 +1,40 @@
 #include "graph.h"
 //Edge functions
 Edge::Edge() {
-    vertices_ = std::make_pair<Vertex *, Vertex*>(NULL, NULL);
 }
 Edge::Edge(Vertex *v1, Vertex *v2) {
-    vertices_ = std::make_pair<Vertex *, Vertex *>(v1, v2);
+    vertices_.push_back(v1);
+    vertices_.push_back(v2);
 }
 Vertex * Edge::getFirstVertex() {
-    return vertices_.first;
+    return vertices_.front();
 }
 Vertex * Edge::getSecondVertex() {
-    return vertices_.second;
+    return vertices_.back();
 }
 Vertex::Vertex() {
     label_.clear();
     adjacent_vertices_.clear();
 }
 //Vertex Functions
-Vertex::Vertex(int label) {
-    label_.push_back(label);
+Vertex::Vertex(std::string label) {
+    label_ = label;
     adjacent_vertices_.clear();
 }
-void Vertex::addLabel(int label) {
-    label_.push_back(label);
+void Vertex::setLabel(std::string label) {
+    label_ = label;
+}
+std::string Vertex::getLabel() const {
+    return label_;
 }
 void Vertex::addConnection(Vertex *v) {
     adjacent_vertices_.push_back(v);
 }
-std::string Vertex::getLabelString() const {
-    std::stringstream st;
-    st << "{";
-    for (std::list<int>::const_iterator it=label_.begin(); it != label_.end(); ++it) {
-        st << *it;
-    }
-    st << "}";
-    return st.str();
-}
 std::ostream & operator<<(std::ostream & os, const Vertex & v) {
-    os << "Vertex(" << v.getLabelString() << " ";
+    os << "Vertex(" << v.getLabel() << " ";
     for (std::list<Vertex *>::const_iterator it=v.adjacent_vertices_.begin(); it != v.adjacent_vertices_.end(); ++it) {
         Vertex * cur_v = *it;
-        os << cur_v->getLabelString();
+        os << cur_v->getLabel();
     }
     os << ")";
     return os;
