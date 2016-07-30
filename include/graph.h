@@ -1,4 +1,5 @@
 #include <list>
+#include <set>
 #include <string>
 #include <sstream>
 #include <climits>
@@ -13,6 +14,9 @@ class Vertex {
         void setLabel(std::string label);
         std::string getLabel() const;
         void addConnection(Vertex *v);
+        bool operator==(const Vertex & other) const;
+        bool operator!=(const Vertex & other) const;
+        bool operator<(const Vertex & other) const;
         friend std::ostream& operator<<(std::ostream &os, const Vertex &v);
 };
 class Edge {
@@ -26,11 +30,12 @@ class Edge {
 };
 class Graph {
     private:
-        std::list<Vertex *> vertices_;
+        std::set<Vertex *> vertices_;
         std::list<Edge *> edges_;
     public:
         Graph();
         void addVertex(Vertex *v);
+        bool hasVertex(Vertex *v);
         void addEdge(Edge *e);
         int minCut();
         friend std::ostream& operator<<(std::ostream &os, const Graph &g);

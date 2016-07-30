@@ -66,5 +66,7 @@ target_link_libraries(graph_test graph gtest pthread)
 
 #SPECIFIC PROBLEM SOLVERS
 set(MIN_CUT_FINDER_SRCS "${CMAKE_SOURCE_DIR}/src/min_cut_finder")
+find_package(Boost REQUIRED) #for tokenizer
+include_directories(${Boost_INCLUDE_DIR})
 add_executable(min_cut_finder ${MIN_CUT_FINDER_SRCS})
-target_link_libraries(min_cut_finder graph)
+target_link_libraries(min_cut_finder graph ${Boost_LIBRARIES})
