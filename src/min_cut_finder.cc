@@ -25,9 +25,15 @@ Graph readGraph() {
 }
 int main() {
     Graph g = readGraph();
-    std::cout << g << std::endl;
-    for (int i = 0; i < 10; i++) {
-        g.contract();
+    int min = 1000;
+    int cur;
+    for (int i = 0; i < 100; i++) {
+        Graph cur_g = g;
+        cur = cur_g.minCut();
+        if (cur < min) {
+           min = cur;
+        }
+        std::cout << "random trial " << i+1 << " got: " << cur << " minimum is: " << min << std::endl;
     }
     return 0;
 }

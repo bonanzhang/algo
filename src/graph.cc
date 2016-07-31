@@ -43,22 +43,81 @@ Graph::Graph() {
     vertices_.clear();
 }
 void Graph::contract() {
+    std::srand(std::time(0));
     //pick random Vertex
-    std::set<Vertex>::iterator u_it(vertices_.begin());
+    std::set<Vertex>::iterator rand_u_it(vertices_.begin());
     int u_rand_index = rand() % vertices_.size();
-    std::advance(u_it, u_rand_index);
-    Vertex u = *u_it;
+    std::advance(rand_u_it, u_rand_index);
+    Vertex u = *rand_u_it;
+    std::string replace = u.getLabel();
     //pick random connection
     std::list<Vertex> adjacent_vertices = u.getAdjacentVertices();
-    std::list<Vertex>::const_iterator v_it(adjacent_vertices.begin());
+    std::list<Vertex>::const_iterator rand_v_it(adjacent_vertices.begin());
     int v_rand_index = rand() % adjacent_vertices.size();
-    std::advance(v_it, v_rand_index);
-    Vertex v = *v_it;
-    std::cout << u.getLabel() << "~" << v.getLabel() << std::endl;
+    std::advance(rand_v_it, v_rand_index);
+    Vertex v = *rand_v_it;
+//    std::cout << u.getLabel() << "~" << v.getLabel() << std::endl;
+//    std::cout << "before append " << std::endl << *this << std::endl;
+    //append all of v's connections to u
+    std::set<Vertex>::iterator u_it;
+    std::set<Vertex>::iterator v_it;
+    u_it = vertices_.find(u);
+    v_it = vertices_.find(v);
+    Vertex cur_u = Vertex(u.getLabel());
+    std::list<Vertex> u_adj = u_it->getAdjacentVertices();
+    for (std::list<Vertex>::const_iterator adj_it = u_adj.begin(); adj_it != u_adj.end(); ++adj_it) {
+        cur_u.addConnection(Vertex(adj_it->getLabel()));
+    }
+    std::list<Vertex> v_adj = v_it->getAdjacentVertices();
+    for (std::list<Vertex>::const_iterator adj_it = v_adj.begin(); adj_it != v_adj.end(); ++adj_it) {
+        cur_u.addConnection(Vertex(adj_it->getLabel()));
+    }
+    vertices_.erase(u_it);
+    vertices_.insert(cur_u);
     
+//    std::cout << "after append " << std::endl << *this << std::endl;
+    //remove v from the graph
+    v_it = vertices_.find(v);
+    vertices_.erase(v_it);
+//    std::cout << "after remove v " << std::endl << *this << std::endl;
+    //replace all vertices with v's label with vertices with u's label
+    std::set<Vertex> copy;
+    for (v_it = vertices_.begin(); v_it != vertices_.end(); ++v_it) {
+        Vertex cur_v(v_it->getLabel());
+        std::list<Vertex> v_adj = v_it->getAdjacentVertices();
+        for (std::list<Vertex>::const_iterator adj_it = v_adj.begin(); adj_it != v_adj.end(); ++adj_it) {
+            if (v == *adj_it) {
+                cur_v.addConnection(Vertex(replace));
+            } else {
+                cur_v.addConnection(Vertex(adj_it->getLabel()));
+            }
+        }
+        copy.insert(cur_v);
+    }
+    vertices_ = copy;
+//    std::cout << "after replace " << std::endl << *this << std::endl;
+    //remove all self edges
+    copy.clear();
+    for (v_it = vertices_.begin(); v_it != vertices_.end(); ++v_it) {
+        std::string self_label = v_it->getLabel();
+        Vertex cur_v(self_label);
+        std::list<Vertex> v_adj = v_it->getAdjacentVertices();
+        for (std::list<Vertex>::const_iterator adj_it = v_adj.begin(); adj_it != v_adj.end(); ++adj_it) {
+            if (adj_it->getLabel().compare(self_label) != 0) {
+                cur_v.addConnection(Vertex(adj_it->getLabel()));
+            }
+        }
+        copy.insert(cur_v);
+    }
+    vertices_ = copy;
+//    std::cout << "after self edge removal " << std::endl << *this << std::endl;
+ 
 }
 int Graph::minCut() {
-    return 0;
+    while (vertices_.size() > 2) {
+        contract();
+    }
+    return vertices_.begin()->getAdjacentVertices().size();
 }
 void Graph::addVertex(Vertex v) {
     vertices_.insert(v);
