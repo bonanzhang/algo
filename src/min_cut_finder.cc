@@ -4,29 +4,26 @@
 #include <boost/foreach.hpp>
 #include "graph.h"
 typedef boost::tokenizer<boost::char_separator<char> > t_tokenizer;
-int main() {
-    std::cout << "Building a Graph from stdin" << std::endl;
+Graph readGraph() {
     Graph g;
     std::string line;
     boost::char_separator<char> sep("\t");
     while (std::getline(std::cin, line)) {
         t_tokenizer tokens(line, sep);
+        Vertex cur_v;
         for (t_tokenizer::iterator it = tokens.begin(); it != tokens.end(); ++it) {
-            Vertex * cur_v;
             if (it == tokens.begin()) {
-            //    std::cout << "Vertex:";
-                cur_v = new Vertex(*it);
-                g.addVertex(cur_v);
+                cur_v = Vertex(*it);
             } else {
-            //    std::cout << "Adjacent:";
-                Vertex *v = new Vertex(*it);
-                g.addVertex(v);
-                Edge * e = new Edge(cur_v, v);
-                g.addEdge(e);
+                Vertex v(*it);
+                cur_v.addConnection(v);
             }
-            //std::cout << *it << std::endl;
         }
+        g.addVertex(cur_v);
     }
-    std::cout << g << std::endl;
+    return g;
+}
+int main() {
+    std::cout << readGraph() << std::endl;
     return 0;
 }

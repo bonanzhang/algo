@@ -9,16 +9,23 @@ TEST(GraphBuildingTest, HandlesEmptyGraphs) {
 TEST(GraphBuildingTest, HandlesTinyGraphs) {
     int complete = 0;
     Graph g;
-    Vertex *v1 = new Vertex("1");
+    Vertex v1("1");
+    Vertex v1_2("2");
+    v1.addConnection(v1_2);
+    Vertex v1_3("3");
+    v1.addConnection(v1_3);
     g.addVertex(v1);
-    Vertex *v2 = new Vertex("2");
+
+    Vertex v2("2");
+    Vertex v2_1("1");
+    v2.addConnection(v2_1);
     g.addVertex(v2);
-    Edge *e1 = new Edge(v1, v2);
-    g.addEdge(e1);
-    Vertex *v3 = new Vertex("3");
+
+    Vertex v3("3");
+    Vertex v3_1("1");
+    v3.addConnection(v3_1);
     g.addVertex(v3);
-    Edge *e2 = new Edge(v1, v3);
-    g.addEdge(e2);
+
     std::cout << g;
     complete = 1;
     EXPECT_EQ(complete, 1);
