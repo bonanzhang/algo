@@ -24,6 +24,10 @@ Graph readGraph() {
     return g;
 }
 int main() {
-    std::cout << readGraph() << std::endl;
+    Graph g = readGraph();
+    std::cout << g << std::endl;
+    for (int i = 0; i < 10; i++) {
+        g.contract();
+    }
     return 0;
 }

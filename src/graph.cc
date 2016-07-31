@@ -1,30 +1,9 @@
 #include "graph.h"
-//Edge functions
-Edge::Edge() {
-}
-Edge::Edge(Vertex v1, Vertex v2) {
-    vertices_.push_back(v1);
-    vertices_.push_back(v2);
-}
-Vertex Edge::getFirstVertex() const{
-    return vertices_.front();
-}
-Vertex Edge::getSecondVertex() const{
-    return vertices_.back();
-}
+//Vertex Functions
 Vertex::Vertex() {
     label_.clear();
     adjacent_vertices_.clear();
 }
-std::ostream & operator<<(std::ostream & os, const Edge &e) {
-    os << "Edge(";
-    os << e.getFirstVertex().getLabel() << ",";
-    os << e.getSecondVertex().getLabel();
-    os << ")";
-    return os;
-}
-
-//Vertex Functions
 Vertex::Vertex(std::string label) {
     label_ = label;
     adjacent_vertices_.clear();
@@ -34,6 +13,9 @@ void Vertex::setLabel(std::string label) {
 }
 std::string Vertex::getLabel() const {
     return label_;
+}
+std::list<Vertex> Vertex::getAdjacentVertices() const {
+    return adjacent_vertices_;
 }
 void Vertex::addConnection(Vertex v) {
     adjacent_vertices_.push_back(v);
@@ -59,7 +41,21 @@ std::ostream & operator<<(std::ostream & os, const Vertex & v) {
 //Graph Functions
 Graph::Graph() {
     vertices_.clear();
-    edges_.clear();
+}
+void Graph::contract() {
+    //pick random Vertex
+    std::set<Vertex>::iterator u_it(vertices_.begin());
+    int u_rand_index = rand() % vertices_.size();
+    std::advance(u_it, u_rand_index);
+    Vertex u = *u_it;
+    //pick random connection
+    std::list<Vertex> adjacent_vertices = u.getAdjacentVertices();
+    std::list<Vertex>::const_iterator v_it(adjacent_vertices.begin());
+    int v_rand_index = rand() % adjacent_vertices.size();
+    std::advance(v_it, v_rand_index);
+    Vertex v = *v_it;
+    std::cout << u.getLabel() << "~" << v.getLabel() << std::endl;
+    
 }
 int Graph::minCut() {
     return 0;
@@ -70,34 +66,12 @@ void Graph::addVertex(Vertex v) {
 bool Graph::hasVertex(Vertex v) {
     return vertices_.find(v) != vertices_.end();
 }
-void Graph::addEdge(Edge e) {
-    edges_.push_back(e);
-//    Vertex v1 = e.getFirstVertex();
-//    Vertex v2 = e.getSecondVertex();
-//    for (std::set<Vertex>::iterator it=vertices_.begin(); it != vertices_.end(); ++it) {
-//        Vertex copy = *it;
-//        if (copy == v1) {
-//            copy.addConnection(v2);
-//            vertices_.erase(it);
-//            vertices_.insert(copy);
-//        }
-//        if (copy == v2) {
-//            copy.addConnection(v1);
-//            vertices_.erase(it);
-//            vertices_.insert(copy);
-//        }
-//    }
-}
 std::ostream & operator<<(std::ostream & os, const Graph & g) {
     os << "Graph(" << std::endl;
     for (std::set<Vertex>::const_iterator it=g.vertices_.begin(); it != g.vertices_.end(); ++it) {
         Vertex cur_v = *it;
         os << "  " << cur_v << std::endl;
     }
-    for (std::list<Edge>::const_iterator it=g.edges_.begin(); it != g.edges_.end(); ++it) {
-        Edge cur_e = *it;
-        os << "  " << cur_e << std::endl;
-    }
-    os << ")" << std::endl;;
+    os << ")";
     return os;
 }
