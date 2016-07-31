@@ -1,37 +1,34 @@
 #include <list>
+#include <set>
 #include <string>
 #include <sstream>
 #include <climits>
 #include <iostream>
+#include <cstdlib>
 class Vertex {
     private:
-        std::list<int> label_;
-        std::list<Vertex *> adjacent_vertices_;
+        std::string label_;
+        std::list<Vertex> adjacent_vertices_;
     public:
         Vertex();
-        Vertex(int label);
-        void addLabel(int label);
-        void addConnection(Vertex *v);
-        std::string getLabelString() const;
+        Vertex(std::string label);
+        void setLabel(std::string label);
+        std::string getLabel() const;
+        std::list<Vertex> getAdjacentVertices() const;
+        void addConnection(Vertex v);
+        bool operator==(const Vertex & other) const;
+        bool operator!=(const Vertex & other) const;
+        bool operator<(const Vertex & other) const;
         friend std::ostream& operator<<(std::ostream &os, const Vertex &v);
-};
-class Edge {
-    private:
-        std::pair<Vertex *, Vertex *> vertices_;
-    public:
-        Edge();
-        Edge(Vertex *v1, Vertex *v2);
-        Vertex * getFirstVertex();
-        Vertex * getSecondVertex();
 };
 class Graph {
     private:
-        std::list<Vertex *> vertices_;
-        std::list<Edge *> edges_;
+        std::set<Vertex> vertices_;
     public:
         Graph();
-        void addVertex(Vertex *v);
-        void addEdge(Edge *e);
+        void addVertex(Vertex v);
+        bool hasVertex(Vertex v);
+        void contract();
         int minCut();
         friend std::ostream& operator<<(std::ostream &os, const Graph &g);
 };
