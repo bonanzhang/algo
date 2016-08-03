@@ -50,3 +50,6 @@ find_package(Boost REQUIRED) #for tokenizer
 include_directories(${Boost_INCLUDE_DIR})
 add_executable(min_cut_finder ${MIN_CUT_FINDER_SRCS})
 target_link_libraries(min_cut_finder graph ${Boost_LIBRARIES})
+
+set(SCC_FINDER_SRCS "${CMAKE_SOURCE_DIR}/src/SCC_finder.cc")
+add_executable(SCC_finder ${SCC_FINDER_SRCS})

@@ -26,7 +26,6 @@ TEST(GraphBuildingTest, HandlesTinyGraphs) {
     v3.addConnection(v3_1);
     g.addVertex(v3);
 
-    std::cout << g;
     complete = 1;
     EXPECT_EQ(complete, 1);
 }
