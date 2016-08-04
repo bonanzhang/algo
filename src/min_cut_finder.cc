@@ -10,16 +10,15 @@ Graph readGraph() {
     boost::char_separator<char> sep("\t");
     while (std::getline(std::cin, line)) {
         t_tokenizer tokens(line, sep);
-        Vertex cur_v;
+        Vertex u;
         for (t_tokenizer::iterator it = tokens.begin(); it != tokens.end(); ++it) {
             if (it == tokens.begin()) {
-                cur_v = Vertex(*it);
+                u = Vertex(*it);
             } else {
                 Vertex v(*it);
-                cur_v.addConnection(v);
+                g.addEdge(u, v);
             }
         }
-        g.addVertex(cur_v);
     }
     return g;
 }

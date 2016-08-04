@@ -11,20 +11,18 @@ TEST(GraphBuildingTest, HandlesTinyGraphs) {
     Graph g;
     Vertex v1("1");
     Vertex v1_2("2");
-    v1.addConnection(v1_2);
+    g.addEdge(v1, v1_2);
     Vertex v1_3("3");
-    v1.addConnection(v1_3);
-    g.addVertex(v1);
+    g.addEdge(v1, v1_3);
 
     Vertex v2("2");
     Vertex v2_1("1");
-    v2.addConnection(v2_1);
-    g.addVertex(v2);
+    g.addEdge(v2, v2_1);
 
     Vertex v3("3");
     Vertex v3_1("1");
-    v3.addConnection(v3_1);
-    g.addVertex(v3);
+    g.addEdge(v3, v3_1);
+    std::cout << g << std::endl;
 
     complete = 1;
     EXPECT_EQ(complete, 1);
