@@ -1,11 +1,12 @@
 #include "graph.h"
 //Vertex Functions
 Vertex::Vertex() {
+    label_ = std::string();
 }
 Vertex::Vertex(std::string label) {
     label_ = label;
 }
-void Vertex::setLabel(std::string label) {
+void Vertex::setLabel(const std::string label) {
     label_ = label;
 }
 std::string Vertex::getLabel() const {
@@ -75,6 +76,48 @@ int Graph::minCut() {
         contract();
     }
     return adj_list_.begin()->second.size();
+}
+void Graph::DFS() {
+    DFS(adj_list_.begin()->first);
+}
+void Graph::DFS(Vertex start) {
+    std::set<Vertex> visited;
+    std::stack<Vertex> s;
+    s.push(start);
+    while (!s.empty()) {
+        Vertex v = s.top();
+        std::cout << v << std::endl;
+        s.pop();
+        std::map<Vertex, std::vector<Vertex> >::iterator v_it = adj_list_.find(v);
+        visited.insert(v_it->first);
+        std::vector<Vertex> adj = v_it->second;
+        for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
+            if (visited.find(adj_list_.find(*it)->first) == visited.end()) {
+                s.push(*it);
+            }
+        }
+    }
+}
+void Graph::BFS() {
+    BFS(adj_list_.begin()->first);
+}
+void Graph::BFS(Vertex start) {
+    std::set<Vertex> visited;
+    std::queue<Vertex> q;
+    q.push(start);
+    while (!q.empty()) {
+        Vertex v = q.front();
+        std::cout << v << std::endl;
+        q.pop();
+        std::map<Vertex, std::vector<Vertex> >::iterator v_it = adj_list_.find(v);
+        visited.insert(v_it->first);
+        std::vector<Vertex> adj = v_it->second;
+        for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
+            if (visited.find(adj_list_.find(*it)->first) == visited.end()) {
+                q.push(*it);
+            }
+        }
+    }
 }
 std::ostream & operator<<(std::ostream & os, const Graph & g) {
     os << "Graph(" << std::endl;

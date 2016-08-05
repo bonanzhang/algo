@@ -16,6 +16,10 @@ int main() {
         Vertex v(dst);
         g.addEdge(u,v);
     }
-    std::cout << g << std::endl;;
+    std::cout << g << std::endl;
+    std::cout << "BFS" << std::endl;
+    g.BFS();
+    std::cout << "DFS" << std::endl;
+    g.DFS();
     return 0;
 }
