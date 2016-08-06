@@ -78,45 +78,45 @@ int Graph::minCut() {
     return adj_list_.begin()->second.size();
 }
 void Graph::DFS() {
+    visited_.clear();
     DFS(adj_list_.begin()->first);
+    std::cout << std::endl;
 }
 void Graph::DFS(Vertex start) {
-    std::set<Vertex> discovered;
     std::stack<Vertex> s;
     s.push(start);
-    std::cout << start << std::endl;
     while (!s.empty()) {
         Vertex v = s.top();
         s.pop();
-        if (discovered.find(v) == discovered.end()) {
-            discovered.insert(v);
+        if (visited_.find(v) == visited_.end()) {
+            std::cout << v << " ";
+            visited_.insert(v);
             std::vector<Vertex> adj = adj_list_.find(v)->second;
             for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
-                if (discovered.find(*it) == discovered.end()) {
+                if (visited_.find(*it) == visited_.end()) {
                     s.push(*it);
-                    std::cout << *it << std::endl;
                 }
             }
         }
     }
 }
 void Graph::BFS() {
+    visited_.clear();
     BFS(adj_list_.begin()->first);
+    std::cout << std::endl;
 }
 void Graph::BFS(Vertex start) {
-    std::set<Vertex> discovered;
     std::queue<Vertex> q;
     q.push(start);
-    std::cout << start << std::endl;
     while (!q.empty()) {
         Vertex v = q.front();
         q.pop();
-        discovered.insert(v);
+        std::cout << v << " ";
+        visited_.insert(v);
         std::vector<Vertex> adj = adj_list_.find(v)->second;
         for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
-            if (discovered.find(*it) == discovered.end()) {
+            if (visited_.find(*it) == visited_.end()) {
                 q.push(*it);
-                std::cout << *it << std::endl;
             }
         }
     }

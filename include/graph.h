@@ -25,6 +25,7 @@ class Vertex {
 };
 class Graph {
     private:
+        std::set<Vertex> visited_;
         std::map<Vertex, std::vector<Vertex> > adj_list_;
     public:
         Graph();
