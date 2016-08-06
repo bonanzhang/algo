@@ -78,8 +78,15 @@ int Graph::minCut() {
     return adj_list_.begin()->second.size();
 }
 std::vector<Vertex> Graph::DFS() {
+    std::vector<Vertex> result;
     visited_.clear();
-    return DFS(adj_list_.begin()->first);
+    for (std::map<Vertex, std::vector<Vertex> >::iterator it = adj_list_.begin(); it != adj_list_.end(); ++it) {
+        if (visited_.find(it->first) == visited_.end()) {
+            std::vector<Vertex> partial = DFS(it->first);
+            result.insert(result.end(), partial.begin(), partial.end());
+        }
+    }
+    return result;
 }
 std::vector<Vertex> Graph::DFS(Vertex start) {
     std::vector<Vertex> result;
@@ -102,8 +109,15 @@ std::vector<Vertex> Graph::DFS(Vertex start) {
     return result;
 }
 std::vector<Vertex> Graph::BFS() {
+    std::vector<Vertex> result;
     visited_.clear();
-    return BFS(adj_list_.begin()->first);
+    for (std::map<Vertex, std::vector<Vertex> >::iterator it = adj_list_.begin(); it != adj_list_.end(); ++it) {
+        if (visited_.find(it->first) == visited_.end()) {
+            std::vector<Vertex> partial = BFS(it->first);
+            result.insert(result.end(), partial.begin(), partial.end());
+        }
+    }
+    return result;
 }
 std::vector<Vertex> Graph::BFS(Vertex start) {
     std::vector<Vertex> result;
