@@ -1,31 +1,48 @@
 #include "graph.h"
 #include <gtest/gtest.h>
-TEST(GraphBuildingTest, HandlesEmptyGraphs) {
-    int complete = 0;
+TEST(GraphTraversalTest, HandlesBFS) {
     Graph g;
-    complete = 1;
-    EXPECT_EQ(complete, 1);
+    g.addEdge(Vertex(1), Vertex(2));
+    g.addEdge(Vertex(1), Vertex(5));
+    g.addEdge(Vertex(1), Vertex(8));
+    g.addEdge(Vertex(2), Vertex(3));
+    g.addEdge(Vertex(3), Vertex(4));
+    g.addEdge(Vertex(4), Vertex(2));
+    g.addEdge(Vertex(5), Vertex(6));
+    g.addEdge(Vertex(6), Vertex(3));
+    g.addEdge(Vertex(6), Vertex(7));
+    g.addEdge(Vertex(6), Vertex(8));
+    g.addEdge(Vertex(7), Vertex(7));
+    g.addEdge(Vertex(8), Vertex(8));
+     
+    std::vector<Vertex> res = g.BFS();
+    int expected[] = {1,2,5,8,3,6,4,7};
+    ASSERT_EQ(sizeof(expected)/sizeof(expected[0]), res.size());
+    for (int i = 0; i < res.size(); i++) {
+        EXPECT_EQ(res[i].getLabel(), expected[i]);
+    }
 }
-TEST(GraphBuildingTest, HandlesTinyGraphs) {
-    int complete = 0;
+TEST(GraphTraversalTest, HandlesDFS) {
     Graph g;
-    Vertex v1("1");
-    Vertex v1_2("2");
-    g.addEdge(v1, v1_2);
-    Vertex v1_3("3");
-    g.addEdge(v1, v1_3);
-
-    Vertex v2("2");
-    Vertex v2_1("1");
-    g.addEdge(v2, v2_1);
-
-    Vertex v3("3");
-    Vertex v3_1("1");
-    g.addEdge(v3, v3_1);
-    std::cout << g << std::endl;
-
-    complete = 1;
-    EXPECT_EQ(complete, 1);
+    g.addEdge(Vertex(1), Vertex(2));
+    g.addEdge(Vertex(1), Vertex(5));
+    g.addEdge(Vertex(1), Vertex(8));
+    g.addEdge(Vertex(2), Vertex(3));
+    g.addEdge(Vertex(3), Vertex(4));
+    g.addEdge(Vertex(4), Vertex(2));
+    g.addEdge(Vertex(5), Vertex(6));
+    g.addEdge(Vertex(6), Vertex(3));
+    g.addEdge(Vertex(6), Vertex(7));
+    g.addEdge(Vertex(6), Vertex(8));
+    g.addEdge(Vertex(7), Vertex(7));
+    g.addEdge(Vertex(8), Vertex(8));
+     
+    std::vector<Vertex> res = g.DFS();
+    int expected[] = {1,8,5,6,7,3,4,2};
+    ASSERT_EQ(sizeof(expected)/sizeof(expected[0]), res.size());
+    for (int i = 0; i < res.size(); i++) {
+        EXPECT_EQ(res[i].getLabel(), expected[i]);
+    }
 }
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

@@ -11,13 +11,13 @@
 #include <cstdlib>
 class Vertex {
     private:
-        std::string label_;
+        int label_;
     public:
         Vertex();
 
-        Vertex(std::string label);
-        void setLabel(const std::string label);
-        std::string getLabel() const;
+        Vertex(int label);
+        void setLabel(const int label);
+        int getLabel() const;
 
         bool operator==(const Vertex & other) const;
         bool operator<(const Vertex & other) const;
@@ -32,9 +32,9 @@ class Graph {
         void addEdge(Vertex u, Vertex v);
         void contract();
         int minCut();
-        void BFS();
-        void BFS(Vertex start);
-        void DFS();
-        void DFS(Vertex start);
+        std::vector<Vertex> BFS();
+        std::vector<Vertex> BFS(Vertex start);
+        std::vector<Vertex> DFS();
+        std::vector<Vertex> DFS(Vertex start);
         friend std::ostream& operator<<(std::ostream &os, const Graph &g);
 };

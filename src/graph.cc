@@ -1,22 +1,22 @@
 #include "graph.h"
 //Vertex Functions
 Vertex::Vertex() {
-    label_ = std::string();
+    label_ = 0;
 }
-Vertex::Vertex(std::string label) {
+Vertex::Vertex(int label) {
     label_ = label;
 }
-void Vertex::setLabel(const std::string label) {
+void Vertex::setLabel(const int label) {
     label_ = label;
 }
-std::string Vertex::getLabel() const {
+int Vertex::getLabel() const {
     return label_;
 }
 bool Vertex::operator==(const Vertex &other) const {
-    return this->getLabel().compare(other.getLabel()) == 0;
+    return this->getLabel() == other.getLabel();
 }
 bool Vertex::operator<(const Vertex &other) const {
-    return this->getLabel().compare(other.getLabel()) < 0;
+    return this->getLabel() < other.getLabel();
 }
 std::ostream & operator<<(std::ostream & os, const Vertex & v) {
     os << v.getLabel();
@@ -77,19 +77,19 @@ int Graph::minCut() {
     }
     return adj_list_.begin()->second.size();
 }
-void Graph::DFS() {
+std::vector<Vertex> Graph::DFS() {
     visited_.clear();
-    DFS(adj_list_.begin()->first);
-    std::cout << std::endl;
+    return DFS(adj_list_.begin()->first);
 }
-void Graph::DFS(Vertex start) {
+std::vector<Vertex> Graph::DFS(Vertex start) {
+    std::vector<Vertex> result;
     std::stack<Vertex> s;
     s.push(start);
     while (!s.empty()) {
         Vertex v = s.top();
         s.pop();
         if (visited_.find(v) == visited_.end()) {
-            std::cout << v << " ";
+            result.push_back(v);
             visited_.insert(v);
             std::vector<Vertex> adj = adj_list_.find(v)->second;
             for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
@@ -99,19 +99,20 @@ void Graph::DFS(Vertex start) {
             }
         }
     }
+    return result;
 }
-void Graph::BFS() {
+std::vector<Vertex> Graph::BFS() {
     visited_.clear();
-    BFS(adj_list_.begin()->first);
-    std::cout << std::endl;
+    return BFS(adj_list_.begin()->first);
 }
-void Graph::BFS(Vertex start) {
+std::vector<Vertex> Graph::BFS(Vertex start) {
+    std::vector<Vertex> result;
     std::queue<Vertex> q;
     q.push(start);
     while (!q.empty()) {
         Vertex v = q.front();
         q.pop();
-        std::cout << v << " ";
+        result.push_back(v);
         visited_.insert(v);
         std::vector<Vertex> adj = adj_list_.find(v)->second;
         for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
@@ -120,6 +121,7 @@ void Graph::BFS(Vertex start) {
             }
         }
     }
+    return result;
 }
 std::ostream & operator<<(std::ostream & os, const Graph & g) {
     os << "Graph(" << std::endl;

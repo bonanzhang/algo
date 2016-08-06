@@ -3,8 +3,8 @@
 #include <sstream>
 #include "graph.h"
 int main() {
-    std::string src;
-    std::string dst;
+    int src;
+    int dst;
     Graph g;
     std::string line;
     std::stringstream ss;

@@ -13,9 +13,9 @@ Graph readGraph() {
         Vertex u;
         for (t_tokenizer::iterator it = tokens.begin(); it != tokens.end(); ++it) {
             if (it == tokens.begin()) {
-                u = Vertex(*it);
+                u = Vertex(std::stoi(*it));
             } else {
-                Vertex v(*it);
+                Vertex v(std::stoi(*it));
                 g.addEdge(u, v);
             }
         }
