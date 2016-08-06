@@ -81,19 +81,21 @@ void Graph::DFS() {
     DFS(adj_list_.begin()->first);
 }
 void Graph::DFS(Vertex start) {
-    std::set<Vertex> visited;
+    std::set<Vertex> discovered;
     std::stack<Vertex> s;
     s.push(start);
+    std::cout << start << std::endl;
     while (!s.empty()) {
         Vertex v = s.top();
-        std::cout << v << std::endl;
         s.pop();
-        std::map<Vertex, std::vector<Vertex> >::iterator v_it = adj_list_.find(v);
-        visited.insert(v_it->first);
-        std::vector<Vertex> adj = v_it->second;
-        for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
-            if (visited.find(adj_list_.find(*it)->first) == visited.end()) {
-                s.push(*it);
+        if (discovered.find(v) == discovered.end()) {
+            discovered.insert(v);
+            std::vector<Vertex> adj = adj_list_.find(v)->second;
+            for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
+                if (discovered.find(*it) == discovered.end()) {
+                    s.push(*it);
+                    std::cout << *it << std::endl;
+                }
             }
         }
     }
@@ -102,19 +104,19 @@ void Graph::BFS() {
     BFS(adj_list_.begin()->first);
 }
 void Graph::BFS(Vertex start) {
-    std::set<Vertex> visited;
+    std::set<Vertex> discovered;
     std::queue<Vertex> q;
     q.push(start);
+    std::cout << start << std::endl;
     while (!q.empty()) {
         Vertex v = q.front();
-        std::cout << v << std::endl;
         q.pop();
-        std::map<Vertex, std::vector<Vertex> >::iterator v_it = adj_list_.find(v);
-        visited.insert(v_it->first);
-        std::vector<Vertex> adj = v_it->second;
+        discovered.insert(v);
+        std::vector<Vertex> adj = adj_list_.find(v)->second;
         for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
-            if (visited.find(adj_list_.find(*it)->first) == visited.end()) {
+            if (discovered.find(*it) == discovered.end()) {
                 q.push(*it);
+                std::cout << *it << std::endl;
             }
         }
     }
