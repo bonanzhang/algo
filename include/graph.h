@@ -32,9 +32,12 @@ class Graph {
         void addEdge(Vertex u, Vertex v);
         void contract();
         int minCut();
-        std::vector<Vertex> BFS();
-        std::vector<Vertex> BFS(Vertex start);
         std::vector<Vertex> DFS();
         std::vector<Vertex> DFS(Vertex start);
+        std::vector<Vertex> BFS();
+        std::vector<Vertex> BFS(Vertex start);
+        std::vector<Vertex> getFinishTime(Vertex start);
+        std::vector<Vertex> SCC_first_pass();
+        std::vector<std::vector<Vertex> > SCC_second_pass(std::vector<Vertex> order);
         friend std::ostream& operator<<(std::ostream &os, const Graph &g);
 };

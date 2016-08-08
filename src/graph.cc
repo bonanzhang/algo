@@ -91,6 +91,7 @@ std::vector<Vertex> Graph::DFS() {
 std::vector<Vertex> Graph::DFS(Vertex start) {
     std::vector<Vertex> result;
     std::stack<Vertex> s;
+    result.clear();
     s.push(start);
     while (!s.empty()) {
         Vertex v = s.top();
@@ -98,10 +99,12 @@ std::vector<Vertex> Graph::DFS(Vertex start) {
         if (visited_.find(v) == visited_.end()) {
             result.push_back(v);
             visited_.insert(v);
-            std::vector<Vertex> adj = adj_list_.find(v)->second;
-            for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
-                if (visited_.find(*it) == visited_.end()) {
-                    s.push(*it);
+            if (adj_list_.find(v) != adj_list_.end()) {
+                std::vector<Vertex> adj = adj_list_.find(v)->second;
+                for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
+                    if (visited_.find(*it) == visited_.end()) {
+                        s.push(*it);
+                    }
                 }
             }
         }
@@ -128,11 +131,24 @@ std::vector<Vertex> Graph::BFS(Vertex start) {
         q.pop();
         result.push_back(v);
         visited_.insert(v);
-        std::vector<Vertex> adj = adj_list_.find(v)->second;
-        for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
-            if (visited_.find(*it) == visited_.end()) {
-                q.push(*it);
+        if (adj_list_.find(v) != adj_list_.end()) {
+            std::vector<Vertex> adj = adj_list_.find(v)->second;
+            for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
+                if (visited_.find(*it) == visited_.end()) {
+                    q.push(*it);
+                }
             }
+        }
+    }
+    return result;
+}
+std::vector<std::vector<Vertex> > Graph::SCC_second_pass(std::vector<Vertex> order) {
+    std::vector<std::vector<Vertex> > result;
+    visited_.clear();
+    for (std::vector<Vertex>::iterator it = order.begin(); it != order.end(); ++it) {
+        if (visited_.find(*it) == visited_.end()) {
+            std::vector<Vertex> partial = DFS(*it);
+            result.push_back(partial);
         }
     }
     return result;
