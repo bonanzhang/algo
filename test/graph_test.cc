@@ -41,33 +41,20 @@ TEST(GraphTraversalTest, HandlesDFS) {
     }
 }
 TEST(GraphComponentsTest, FindsSCC) {
-    Graph G;
-    Graph G_rev;
-    G.addEdge(Vertex(1), Vertex(2));
-    G.addEdge(Vertex(2), Vertex(3));
-    G.addEdge(Vertex(3), Vertex(1));
-    G.addEdge(Vertex(3), Vertex(4));
-    G.addEdge(Vertex(5), Vertex(4));
-    G.addEdge(Vertex(6), Vertex(4));
-    G.addEdge(Vertex(8), Vertex(6));
-    G.addEdge(Vertex(6), Vertex(7));
-    G.addEdge(Vertex(7), Vertex(8));
-    G.addEdge(Vertex(4), Vertex(3));
-    G.addEdge(Vertex(4), Vertex(6));
+    Graph g;
+    g.addEdge(Vertex(1), Vertex(2));
+    g.addEdge(Vertex(2), Vertex(3));
+    g.addEdge(Vertex(3), Vertex(1));
+    g.addEdge(Vertex(3), Vertex(4));
+    g.addEdge(Vertex(5), Vertex(4));
+    g.addEdge(Vertex(6), Vertex(4));
+    g.addEdge(Vertex(8), Vertex(6));
+    g.addEdge(Vertex(6), Vertex(7));
+    g.addEdge(Vertex(7), Vertex(8));
+    g.addEdge(Vertex(4), Vertex(3));
+    g.addEdge(Vertex(4), Vertex(6));
 
-    G_rev.addEdge(Vertex(2), Vertex(1));
-    G_rev.addEdge(Vertex(3), Vertex(2));
-    G_rev.addEdge(Vertex(1), Vertex(3));
-    G_rev.addEdge(Vertex(4), Vertex(3));
-    G_rev.addEdge(Vertex(4), Vertex(5));
-    G_rev.addEdge(Vertex(4), Vertex(6));
-    G_rev.addEdge(Vertex(6), Vertex(8));
-    G_rev.addEdge(Vertex(7), Vertex(6));
-    G_rev.addEdge(Vertex(8), Vertex(7));
-    G_rev.addEdge(Vertex(3), Vertex(4));
-    G_rev.addEdge(Vertex(6), Vertex(4));
-    std::vector<Vertex> order = G_rev.DFS();
-    std::vector<std::vector<Vertex> > res= G.SCC_second_pass(order);
+    std::vector<std::vector<Vertex> > res= g.findStronglyConnectedComponents();
     int expected[] = {7,1};
     ASSERT_EQ(sizeof(expected)/sizeof(expected[0]), res.size());
     for (int i = 0; i < res.size(); i++) {

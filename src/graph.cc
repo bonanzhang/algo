@@ -31,6 +31,11 @@ void Graph::addEdge(Vertex u, Vertex v) {
         adj_list_.insert(std::pair<Vertex, std::vector<Vertex> >(u, std::vector<Vertex>()));
     }
     adj_list_.find(u)->second.push_back(v);
+
+    if (rev_graph_.find(v) == rev_graph_.end()) {
+        rev_graph_.insert(std::pair<Vertex, std::vector<Vertex> >(v, std::vector<Vertex>()));
+    }
+    rev_graph_.find(v)->second.push_back(u);
 }
 void Graph::contract() {
     //pick random Vertex
@@ -88,9 +93,21 @@ std::vector<Vertex> Graph::DFS() {
     }
     return result;
 }
+std::vector<std::vector<Vertex> > Graph::DFS(std::vector<Vertex> order) {
+    std::vector<std::vector<Vertex> > result;
+    visited_.clear();
+    for (std::vector<Vertex>::iterator it = order.begin(); it != order.end(); ++it) {
+        if (visited_.find(*it) == visited_.end()) {
+            std::vector<Vertex> partial = DFS(*it);
+            result.push_back(partial);
+        }
+    }
+    return result;
+}
 std::vector<Vertex> Graph::DFS(Vertex start) {
     std::vector<Vertex> result;
     std::stack<Vertex> s;
+    std::set<Vertex> seen;
     result.clear();
     s.push(start);
     while (!s.empty()) {
@@ -99,6 +116,7 @@ std::vector<Vertex> Graph::DFS(Vertex start) {
         if (visited_.find(v) == visited_.end()) {
             result.push_back(v);
             visited_.insert(v);
+            s.push(v);
             if (adj_list_.find(v) != adj_list_.end()) {
                 std::vector<Vertex> adj = adj_list_.find(v)->second;
                 for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
@@ -106,6 +124,11 @@ std::vector<Vertex> Graph::DFS(Vertex start) {
                         s.push(*it);
                     }
                 }
+            }
+        } else {
+            if (seen.find(v) == seen.end()) {
+                seen.insert(v);
+                finished_.push_back(v);
             }
         }
     }
@@ -142,16 +165,10 @@ std::vector<Vertex> Graph::BFS(Vertex start) {
     }
     return result;
 }
-std::vector<std::vector<Vertex> > Graph::SCC_second_pass(std::vector<Vertex> order) {
+std::vector<std::vector<Vertex> > Graph::findStronglyConnectedComponents() {
     std::vector<std::vector<Vertex> > result;
-    visited_.clear();
-    for (std::vector<Vertex>::iterator it = order.begin(); it != order.end(); ++it) {
-        if (visited_.find(*it) == visited_.end()) {
-            std::vector<Vertex> partial = DFS(*it);
-            result.push_back(partial);
-        }
-    }
-    return result;
+    DFS();
+    return DFS(finished_);
 }
 std::ostream & operator<<(std::ostream & os, const Graph & g) {
     os << "Graph(" << std::endl;
