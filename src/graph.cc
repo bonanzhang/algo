@@ -76,23 +76,6 @@ void Graph::contract() {
         }
     }
 }
-int Graph::minCut() {
-    while (adj_list_.size() > 2) {
-        contract();
-    }
-    return adj_list_.begin()->second.size();
-}
-std::vector<Vertex> Graph::DFS() {
-    std::vector<Vertex> result;
-    visited_.clear();
-    for (std::map<Vertex, std::vector<Vertex> >::iterator it = adj_list_.begin(); it != adj_list_.end(); ++it) {
-        if (visited_.find(it->first) == visited_.end()) {
-            std::vector<Vertex> partial = DFS(it->first);
-            result.insert(result.end(), partial.begin(), partial.end());
-        }
-    }
-    return result;
-}
 std::vector<std::vector<Vertex> > Graph::DFS(std::vector<Vertex> order) {
     std::vector<std::vector<Vertex> > result;
     visited_.clear();
@@ -134,13 +117,44 @@ std::vector<Vertex> Graph::DFS(Vertex start) {
     }
     return result;
 }
-std::vector<Vertex> Graph::BFS() {
+std::vector<Vertex> Graph::DFS_rev() {
     std::vector<Vertex> result;
     visited_.clear();
-    for (std::map<Vertex, std::vector<Vertex> >::iterator it = adj_list_.begin(); it != adj_list_.end(); ++it) {
+    for (std::map<Vertex, std::vector<Vertex> >::iterator it = rev_graph_.begin(); it != rev_graph_.end(); ++it) {
         if (visited_.find(it->first) == visited_.end()) {
-            std::vector<Vertex> partial = BFS(it->first);
+            std::vector<Vertex> partial = DFS_rev(it->first);
             result.insert(result.end(), partial.begin(), partial.end());
+        }
+    }
+    std::reverse(finished_.begin(), finished_.end());
+    return result;
+}
+std::vector<Vertex> Graph::DFS_rev(Vertex start) {
+    std::vector<Vertex> result;
+    std::stack<Vertex> s;
+    std::set<Vertex> seen;
+    result.clear();
+    s.push(start);
+    while (!s.empty()) {
+        Vertex v = s.top();
+        s.pop();
+        if (visited_.find(v) == visited_.end()) {
+            result.push_back(v);
+            visited_.insert(v);
+            s.push(v);
+            if (rev_graph_.find(v) != rev_graph_.end()) {
+                std::vector<Vertex> adj = rev_graph_.find(v)->second;
+                for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
+                    if (visited_.find(*it) == visited_.end()) {
+                        s.push(*it);
+                    }
+                }
+            }
+        } else {
+            if (seen.find(v) == seen.end()) {
+                seen.insert(v);
+                finished_.push_back(v);
+            }
         }
     }
     return result;
@@ -165,9 +179,37 @@ std::vector<Vertex> Graph::BFS(Vertex start) {
     }
     return result;
 }
+int Graph::minCut() {
+    while (adj_list_.size() > 2) {
+        contract();
+    }
+    return adj_list_.begin()->second.size();
+}
+std::vector<Vertex> Graph::DFS() {
+    std::vector<Vertex> result;
+    visited_.clear();
+    for (std::map<Vertex, std::vector<Vertex> >::iterator it = adj_list_.begin(); it != adj_list_.end(); ++it) {
+        if (visited_.find(it->first) == visited_.end()) {
+            std::vector<Vertex> partial = DFS(it->first);
+            result.insert(result.end(), partial.begin(), partial.end());
+        }
+    }
+    return result;
+}
+std::vector<Vertex> Graph::BFS() {
+    std::vector<Vertex> result;
+    visited_.clear();
+    for (std::map<Vertex, std::vector<Vertex> >::iterator it = adj_list_.begin(); it != adj_list_.end(); ++it) {
+        if (visited_.find(it->first) == visited_.end()) {
+            std::vector<Vertex> partial = BFS(it->first);
+            result.insert(result.end(), partial.begin(), partial.end());
+        }
+    }
+    return result;
+}
 std::vector<std::vector<Vertex> > Graph::findStronglyConnectedComponents() {
     std::vector<std::vector<Vertex> > result;
-    DFS();
+    DFS_rev();
     return DFS(finished_);
 }
 std::ostream & operator<<(std::ostream & os, const Graph & g) {
