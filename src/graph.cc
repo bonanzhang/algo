@@ -100,12 +100,13 @@ std::vector<Vertex> Graph::DFS(Vertex start) {
             result.push_back(v);
             visited_.insert(v);
             s.push(v);
+            std::vector<Vertex> adj;
             if (adj_list_.find(v) != adj_list_.end()) {
-                std::vector<Vertex> adj = adj_list_.find(v)->second;
-                for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
-                    if (visited_.find(*it) == visited_.end()) {
-                        s.push(*it);
-                    }
+                adj = adj_list_.find(v)->second;
+            }
+            for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
+                if (visited_.find(*it) == visited_.end()) {
+                    s.push(*it);
                 }
             }
         } else {
@@ -142,12 +143,13 @@ std::vector<Vertex> Graph::DFS_rev(Vertex start) {
             result.push_back(v);
             visited_.insert(v);
             s.push(v);
+            std::vector<Vertex> adj;
             if (rev_graph_.find(v) != rev_graph_.end()) {
-                std::vector<Vertex> adj = rev_graph_.find(v)->second;
-                for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
-                    if (visited_.find(*it) == visited_.end()) {
-                        s.push(*it);
-                    }
+                adj = rev_graph_.find(v)->second;
+            }
+            for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
+                if (visited_.find(*it) == visited_.end()) {
+                    s.push(*it);
                 }
             }
         } else {
@@ -168,12 +170,13 @@ std::vector<Vertex> Graph::BFS(Vertex start) {
         q.pop();
         result.push_back(v);
         visited_.insert(v);
+        std::vector<Vertex> adj;
         if (adj_list_.find(v) != adj_list_.end()) {
-            std::vector<Vertex> adj = adj_list_.find(v)->second;
-            for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
-                if (visited_.find(*it) == visited_.end()) {
-                    q.push(*it);
-                }
+            adj = adj_list_.find(v)->second;
+        }
+        for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
+            if (visited_.find(*it) == visited_.end()) {
+                q.push(*it);
             }
         }
     }
