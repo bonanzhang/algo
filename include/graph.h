@@ -11,11 +11,12 @@
 #include <iostream>
 #include <cstdlib>
 #include "vertex.h"
+typedef std::map<Vertex, std::vector<Vertex> > adj_list;
 class Graph {
     private:
         std::set<Vertex> visited_;
-        std::map<Vertex, std::vector<Vertex> > adj_list_;
-        std::map<Vertex, std::vector<Vertex> > rev_graph_;
+        adj_list graph_;
+        adj_list rev_graph_;
         std::vector<Vertex> finished_;
 
         void contract();

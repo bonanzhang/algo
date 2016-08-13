@@ -1,12 +1,12 @@
 #include "graph.h"
 Graph::Graph() {
-    adj_list_.clear();
+    graph_.clear();
 }
 void Graph::addEdge(Vertex u, Vertex v) {
-    if (adj_list_.find(u) == adj_list_.end()) {
-        adj_list_.insert(std::pair<Vertex, std::vector<Vertex> >(u, std::vector<Vertex>()));
+    if (graph_.find(u) == graph_.end()) {
+        graph_.insert(std::pair<Vertex, std::vector<Vertex> >(u, std::vector<Vertex>()));
     }
-    adj_list_.find(u)->second.push_back(v);
+    graph_.find(u)->second.push_back(v);
 
     if (rev_graph_.find(v) == rev_graph_.end()) {
         rev_graph_.insert(std::pair<Vertex, std::vector<Vertex> >(v, std::vector<Vertex>()));
@@ -17,8 +17,8 @@ void Graph::contract() {
     //pick random Vertex
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dis0(0, adj_list_.size()-1);
-    std::map<Vertex, std::vector<Vertex> >::const_iterator rand_u_it = adj_list_.begin();
+    std::uniform_int_distribution<int> dis0(0, graph_.size()-1);
+    adj_list::const_iterator rand_u_it = graph_.begin();
     std::advance(rand_u_it, dis0(mt));
     Vertex u = rand_u_it->first;
     //pick random connection
@@ -28,13 +28,13 @@ void Graph::contract() {
     std::advance(rand_v_it, dis1(mt));
     Vertex v = *rand_v_it;
     //append all of v's connections to u
-    std::map<Vertex, std::vector<Vertex> >::iterator u_it = adj_list_.find(u);
-    std::map<Vertex, std::vector<Vertex> >::iterator v_it = adj_list_.find(v);
+    adj_list::iterator u_it = graph_.find(u);
+    adj_list::iterator v_it = graph_.find(v);
     u_it->second.insert(u_it->second.end(), v_it->second.begin(), v_it->second.end());
     //remove v from the graph
-    adj_list_.erase(v);
+    graph_.erase(v);
     //replace all vertices with v's label with vertices with u's label
-    for (std::map<Vertex, std::vector<Vertex> >::iterator mit=adj_list_.begin(); mit != adj_list_.end(); ++mit) {
+    for (adj_list::iterator mit=graph_.begin(); mit != graph_.end(); ++mit) {
         for (std::vector<Vertex>::iterator vit=mit->second.begin(); vit != mit->second.end(); ++vit) {
             if (*vit == v) {
                 *vit = u;
@@ -42,7 +42,7 @@ void Graph::contract() {
         }
     }
     //remove all self edges
-    for (std::map<Vertex, std::vector<Vertex> >::iterator mit=adj_list_.begin(); mit != adj_list_.end(); ++mit) {
+    for (adj_list::iterator mit=graph_.begin(); mit != graph_.end(); ++mit) {
         for (std::vector<Vertex>::iterator vit=mit->second.begin(); vit != mit->second.end();) {
             if (*vit == mit->first) {
                 vit = mit->second.erase(vit);
@@ -77,8 +77,8 @@ std::vector<Vertex> Graph::DFS(Vertex start) {
             visited_.insert(v);
             s.push(v);
             std::vector<Vertex> adj;
-            if (adj_list_.find(v) != adj_list_.end()) {
-                adj = adj_list_.find(v)->second;
+            if (graph_.find(v) != graph_.end()) {
+                adj = graph_.find(v)->second;
             }
             for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
                 if (visited_.find(*it) == visited_.end()) {
@@ -97,7 +97,7 @@ std::vector<Vertex> Graph::DFS(Vertex start) {
 std::vector<Vertex> Graph::DFS_rev() {
     std::vector<Vertex> result;
     visited_.clear();
-    for (std::map<Vertex, std::vector<Vertex> >::iterator it = rev_graph_.begin(); it != rev_graph_.end(); ++it) {
+    for (adj_list::iterator it = rev_graph_.begin(); it != rev_graph_.end(); ++it) {
         if (visited_.find(it->first) == visited_.end()) {
             std::vector<Vertex> partial = DFS_rev(it->first);
             result.insert(result.end(), partial.begin(), partial.end());
@@ -147,8 +147,8 @@ std::vector<Vertex> Graph::BFS(Vertex start) {
         result.push_back(v);
         visited_.insert(v);
         std::vector<Vertex> adj;
-        if (adj_list_.find(v) != adj_list_.end()) {
-            adj = adj_list_.find(v)->second;
+        if (graph_.find(v) != graph_.end()) {
+            adj = graph_.find(v)->second;
         }
         for (std::vector<Vertex>::iterator it = adj.begin(); it != adj.end(); ++it) {
             if (visited_.find(*it) == visited_.end()) {
@@ -159,15 +159,15 @@ std::vector<Vertex> Graph::BFS(Vertex start) {
     return result;
 }
 int Graph::minCut() {
-    while (adj_list_.size() > 2) {
+    while (graph_.size() > 2) {
         contract();
     }
-    return adj_list_.begin()->second.size();
+    return graph_.begin()->second.size();
 }
 std::vector<Vertex> Graph::DFS() {
     std::vector<Vertex> result;
     visited_.clear();
-    for (std::map<Vertex, std::vector<Vertex> >::iterator it = adj_list_.begin(); it != adj_list_.end(); ++it) {
+    for (adj_list::iterator it = graph_.begin(); it != graph_.end(); ++it) {
         if (visited_.find(it->first) == visited_.end()) {
             std::vector<Vertex> partial = DFS(it->first);
             result.insert(result.end(), partial.begin(), partial.end());
@@ -178,7 +178,7 @@ std::vector<Vertex> Graph::DFS() {
 std::vector<Vertex> Graph::BFS() {
     std::vector<Vertex> result;
     visited_.clear();
-    for (std::map<Vertex, std::vector<Vertex> >::iterator it = adj_list_.begin(); it != adj_list_.end(); ++it) {
+    for (adj_list::iterator it = graph_.begin(); it != graph_.end(); ++it) {
         if (visited_.find(it->first) == visited_.end()) {
             std::vector<Vertex> partial = BFS(it->first);
             result.insert(result.end(), partial.begin(), partial.end());
@@ -193,7 +193,7 @@ std::vector<std::vector<Vertex> > Graph::findStronglyConnectedComponents() {
 }
 std::ostream & operator<<(std::ostream & os, const Graph & g) {
     os << "Graph(" << std::endl;
-    for (std::map<Vertex, std::vector<Vertex> >::const_iterator mit=g.adj_list_.begin(); mit != g.adj_list_.end(); ++mit) {
+    for (adj_list::const_iterator mit=g.graph_.begin(); mit != g.graph_.end(); ++mit) {
         os << "  " << mit->first << "~";
         std::vector<Vertex> adj = mit->second;
         for (std::vector<Vertex>::const_iterator vit=adj.begin(); vit != adj.end(); ++vit) {
