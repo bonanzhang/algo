@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "weighted_graph.h"
 #include <gtest/gtest.h>
 TEST(GraphTraversalTest, HandlesBFS) {
     Graph g;
@@ -61,6 +62,41 @@ TEST(GraphComponentsTest, FindsSCC) {
         EXPECT_EQ(res[i].size(), expected[i]);
     }
     
+}
+TEST(WeightedGraphTest, FindsShortestPaths) {
+    WeightedGraph wg;
+    wg.addEdge(Vertex(1), Vertex(2), 7);
+    wg.addEdge(Vertex(1), Vertex(3), 9);
+    wg.addEdge(Vertex(1), Vertex(6), 14);
+
+    wg.addEdge(Vertex(2), Vertex(1), 7);
+    wg.addEdge(Vertex(2), Vertex(3), 10);
+    wg.addEdge(Vertex(2), Vertex(4), 15);
+
+    wg.addEdge(Vertex(3), Vertex(1), 9);
+    wg.addEdge(Vertex(3), Vertex(2), 10);
+    wg.addEdge(Vertex(3), Vertex(4), 11);
+    wg.addEdge(Vertex(3), Vertex(6), 2);
+
+    wg.addEdge(Vertex(4), Vertex(2), 15);
+    wg.addEdge(Vertex(4), Vertex(3), 11);
+    wg.addEdge(Vertex(4), Vertex(5), 6);
+
+    wg.addEdge(Vertex(5), Vertex(4), 6);
+    wg.addEdge(Vertex(5), Vertex(6), 9);
+
+    wg.addEdge(Vertex(6), Vertex(1), 14);
+    wg.addEdge(Vertex(6), Vertex(3), 2);
+    wg.addEdge(Vertex(6), Vertex(5), 9);
+//    std::cout << wg << std::endl;
+    int expected[] = {0,7,9,20,20,11};
+    std::map<Vertex, int> dist = wg.computeShortestPaths(Vertex(1));
+    for (int i = 1; i <= 6; i++) {
+        EXPECT_EQ(dist[Vertex(i)], expected[i-1]);
+    }
+//    for (std::map<Vertex, int>::const_iterator it = dist.begin(); it != dist.end(); ++it) {
+//        std::cout << it->first << "," << it->second << std::endl;
+//    }
 }
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

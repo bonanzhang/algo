@@ -3,8 +3,8 @@ WeightedGraph::WeightedGraph() {
     graph_.clear();
 }
 void WeightedGraph::addEdge(Vertex u, Vertex v, int l) {
-    if (graph_.find(u) != graph_.end()) {
-        graph_.insert(std::pair<Vertex, neighbor_list >(u, neighbor_list()));
+    if (graph_.find(u) == graph_.end()) {
+        graph_.insert(std::pair<Vertex, neighbor_list>(u, neighbor_list()));
     }
     graph_.find(u)->second.push_back(std::pair<Vertex, int>(v, l));
 }
@@ -31,7 +31,7 @@ std::map<Vertex, int> WeightedGraph::computeShortestPaths(Vertex s) {
     //distances dist
     std::map<Vertex, int> dist;
     //for each v in G
-    for (adj_list::const_iterator it = graph_.begin(); it != graph_.end(); ++it) {
+    for (WeightedGraph::adj_list::const_iterator it = graph_.begin(); it != graph_.end(); ++it) {
         Vertex v = it->first;
         //dist[v] = INFINITE
         dist[v] = 1000000;
@@ -52,10 +52,10 @@ std::map<Vertex, int> WeightedGraph::computeShortestPaths(Vertex s) {
             nl = graph_.find(u)->second;
         }
         for (neighbor_list::const_iterator it = nl.begin(); it != nl.end(); ++it) {
-            //alt = dist[v] + l(u,v)
+            //alt = dist[u] + l(u,v)
             Vertex v = it->first;
             int l_uv = it->second;
-            int alt = dist[v] + l_uv;
+            int alt = dist[u] + l_uv;
             //if alt < dist[v]
             if (alt < dist[v]) {
                 //dist[v] = alt
@@ -66,5 +66,16 @@ std::map<Vertex, int> WeightedGraph::computeShortestPaths(Vertex s) {
     return dist;
 }
 std::ostream& operator<<(std::ostream &os, const WeightedGraph &wg) {
+    os << "Graph(" << std::endl;
+    for (WeightedGraph::adj_list::const_iterator uit=wg.graph_.begin(); uit != wg.graph_.end(); ++uit) {
+        os << "  " << uit->first << "~";
+        WeightedGraph::neighbor_list nl = uit->second;
+        for (WeightedGraph::neighbor_list::const_iterator vit=nl.begin(); vit != nl.end(); ++vit) {
+            os << " " << vit->first << "," <<vit->second;
+        }
+        os << std::endl;
+        
+    }
+    os << ")";
     return os;
 }

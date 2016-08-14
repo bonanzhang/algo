@@ -5,9 +5,9 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-typedef std::vector<std::pair<Vertex, int> > neighbor_list;
-typedef std::map<Vertex, neighbor_list> adj_list;
 class WeightedGraph {
+    typedef std::vector<std::pair<Vertex, int> > neighbor_list;
+    typedef std::map<Vertex, neighbor_list> adj_list;
     public:
          WeightedGraph();
          void addEdge(Vertex u, Vertex v, int dist);

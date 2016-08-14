@@ -18,7 +18,7 @@ void Graph::contract() {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_int_distribution<int> dis0(0, graph_.size()-1);
-    adj_list::const_iterator rand_u_it = graph_.begin();
+    Graph::adj_list::const_iterator rand_u_it = graph_.begin();
     std::advance(rand_u_it, dis0(mt));
     Vertex u = rand_u_it->first;
     //pick random connection
@@ -28,13 +28,13 @@ void Graph::contract() {
     std::advance(rand_v_it, dis1(mt));
     Vertex v = *rand_v_it;
     //append all of v's connections to u
-    adj_list::iterator u_it = graph_.find(u);
-    adj_list::iterator v_it = graph_.find(v);
+    Graph::adj_list::iterator u_it = graph_.find(u);
+    Graph::adj_list::iterator v_it = graph_.find(v);
     u_it->second.insert(u_it->second.end(), v_it->second.begin(), v_it->second.end());
     //remove v from the graph
     graph_.erase(v);
     //replace all vertices with v's label with vertices with u's label
-    for (adj_list::iterator mit=graph_.begin(); mit != graph_.end(); ++mit) {
+    for (Graph::adj_list::iterator mit=graph_.begin(); mit != graph_.end(); ++mit) {
         for (std::vector<Vertex>::iterator vit=mit->second.begin(); vit != mit->second.end(); ++vit) {
             if (*vit == v) {
                 *vit = u;
@@ -42,7 +42,7 @@ void Graph::contract() {
         }
     }
     //remove all self edges
-    for (adj_list::iterator mit=graph_.begin(); mit != graph_.end(); ++mit) {
+    for (Graph::adj_list::iterator mit=graph_.begin(); mit != graph_.end(); ++mit) {
         for (std::vector<Vertex>::iterator vit=mit->second.begin(); vit != mit->second.end();) {
             if (*vit == mit->first) {
                 vit = mit->second.erase(vit);
@@ -97,7 +97,7 @@ std::vector<Vertex> Graph::DFS(Vertex start) {
 std::vector<Vertex> Graph::DFS_rev() {
     std::vector<Vertex> result;
     visited_.clear();
-    for (adj_list::iterator it = rev_graph_.begin(); it != rev_graph_.end(); ++it) {
+    for (Graph::adj_list::iterator it = rev_graph_.begin(); it != rev_graph_.end(); ++it) {
         if (visited_.find(it->first) == visited_.end()) {
             std::vector<Vertex> partial = DFS_rev(it->first);
             result.insert(result.end(), partial.begin(), partial.end());
@@ -167,7 +167,7 @@ int Graph::minCut() {
 std::vector<Vertex> Graph::DFS() {
     std::vector<Vertex> result;
     visited_.clear();
-    for (adj_list::iterator it = graph_.begin(); it != graph_.end(); ++it) {
+    for (Graph::adj_list::iterator it = graph_.begin(); it != graph_.end(); ++it) {
         if (visited_.find(it->first) == visited_.end()) {
             std::vector<Vertex> partial = DFS(it->first);
             result.insert(result.end(), partial.begin(), partial.end());
@@ -178,7 +178,7 @@ std::vector<Vertex> Graph::DFS() {
 std::vector<Vertex> Graph::BFS() {
     std::vector<Vertex> result;
     visited_.clear();
-    for (adj_list::iterator it = graph_.begin(); it != graph_.end(); ++it) {
+    for (Graph::adj_list::iterator it = graph_.begin(); it != graph_.end(); ++it) {
         if (visited_.find(it->first) == visited_.end()) {
             std::vector<Vertex> partial = BFS(it->first);
             result.insert(result.end(), partial.begin(), partial.end());
@@ -193,7 +193,7 @@ std::vector<std::vector<Vertex> > Graph::findStronglyConnectedComponents() {
 }
 std::ostream & operator<<(std::ostream & os, const Graph & g) {
     os << "Graph(" << std::endl;
-    for (adj_list::const_iterator mit=g.graph_.begin(); mit != g.graph_.end(); ++mit) {
+    for (Graph::adj_list::const_iterator mit=g.graph_.begin(); mit != g.graph_.end(); ++mit) {
         os << "  " << mit->first << "~";
         std::vector<Vertex> adj = mit->second;
         for (std::vector<Vertex>::const_iterator vit=adj.begin(); vit != adj.end(); ++vit) {
