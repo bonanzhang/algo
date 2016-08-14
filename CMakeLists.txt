@@ -24,6 +24,8 @@ ExternalProject_Add(googletest
 )
 include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
 link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
+#for tokenizer
+find_package(Boost REQUIRED)
 
 #TESTING
 #testing sources
@@ -52,7 +54,6 @@ target_link_libraries(hash_test gtest pthread)
 
 #SPECIFIC PROBLEM SOLVERS
 set(MIN_CUT_FINDER_SRCS "${CMAKE_SOURCE_DIR}/src/min_cut_finder")
-find_package(Boost REQUIRED) #for tokenizer
 include_directories(${Boost_INCLUDE_DIR})
 add_executable(min_cut_finder ${MIN_CUT_FINDER_SRCS})
 target_link_libraries(min_cut_finder graph ${Boost_LIBRARIES})
@@ -60,3 +61,8 @@ target_link_libraries(min_cut_finder graph ${Boost_LIBRARIES})
 set(SCC_FINDER_SRCS "${CMAKE_SOURCE_DIR}/src/SCC_finder.cc")
 add_executable(SCC_finder ${SCC_FINDER_SRCS})
 target_link_libraries(SCC_finder graph)
+
+set(SHORTEST_PATH_FINDER_SRCS "${CMAKE_SOURCE_DIR}/src/shortest_path_finder.cc")
+include_directories(${Boost_INCLUDE_DIR})
+add_executable(shortest_path_finder ${SHORTEST_PATH_FINDER_SRCS})
+target_link_libraries(shortest_path_finder graph ${Boost_LIBRARIES})

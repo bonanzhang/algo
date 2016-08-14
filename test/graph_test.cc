@@ -88,15 +88,11 @@ TEST(WeightedGraphTest, FindsShortestPaths) {
     wg.addEdge(Vertex(6), Vertex(1), 14);
     wg.addEdge(Vertex(6), Vertex(3), 2);
     wg.addEdge(Vertex(6), Vertex(5), 9);
-//    std::cout << wg << std::endl;
     int expected[] = {0,7,9,20,20,11};
     std::map<Vertex, int> dist = wg.computeShortestPaths(Vertex(1));
     for (int i = 1; i <= 6; i++) {
         EXPECT_EQ(dist[Vertex(i)], expected[i-1]);
     }
-//    for (std::map<Vertex, int>::const_iterator it = dist.begin(); it != dist.end(); ++it) {
-//        std::cout << it->first << "," << it->second << std::endl;
-//    }
 }
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
