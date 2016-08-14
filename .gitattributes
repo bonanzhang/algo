@@ -1,1 +1,2 @@
 resources/SCC.txt filter=lfs diff=lfs merge=lfs -text
+resources/2sum.txt filter=lfs diff=lfs merge=lfs -text
