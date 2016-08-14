@@ -8,6 +8,7 @@ set(SORT_LIB_SRCS         "${CMAKE_SOURCE_DIR}/src/qsort.cc"
 set(SELECT_LIB_SRCS       "${CMAKE_SOURCE_DIR}/src/local_minimum.cc")
 set(DYNAMIC_LIST_LIB_SRCS "${CMAKE_SOURCE_DIR}/src/dynamic_list.cc")
 set(GRAPH_LIB_SRCS        "${CMAKE_SOURCE_DIR}/src/graph.cc"
+                          "${CMAKE_SOURCE_DIR}/src/weighted_graph.cc"
                           "${CMAKE_SOURCE_DIR}/src/vertex.cc")
 #library targets
 add_library(sort          SHARED ${SORT_LIB_SRCS})
