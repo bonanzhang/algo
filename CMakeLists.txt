@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.3)
-project(sort CXX)
+project(algo CXX)
 #include headers in the include folder
 include_directories("${CMAKE_SOURCE_DIR}/include/")
 #source files
@@ -10,11 +10,13 @@ set(DYNAMIC_LIST_LIB_SRCS "${CMAKE_SOURCE_DIR}/src/dynamic_list.cc")
 set(GRAPH_LIB_SRCS        "${CMAKE_SOURCE_DIR}/src/graph.cc"
                           "${CMAKE_SOURCE_DIR}/src/weighted_graph.cc"
                           "${CMAKE_SOURCE_DIR}/src/vertex.cc")
+set(SCHEDULER_LIB_SRCS    "${CMAKE_SOURCE_DIR}/src/scheduler.cc")
 #library targets
 add_library(sort          SHARED ${SORT_LIB_SRCS})
 add_library(select        SHARED ${SELECT_LIB_SRCS})
 add_library(dynamic_list  SHARED ${DYNAMIC_LIST_LIB_SRCS})
 add_library(graph         SHARED ${GRAPH_LIB_SRCS})
+add_library(scheduler     SHARED ${SCHEDULER_LIB_SRCS})
 #test libraries with Coogle C++ Testing Framework
 include(ExternalProject)
 set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
@@ -35,6 +37,7 @@ set(DYNAMIC_LIST_TEST_SRCS "${CMAKE_SOURCE_DIR}/test/dynamic_list_test.cc")
 set(GRAPH_TEST_SRCS        "${CMAKE_SOURCE_DIR}/test/graph_test.cc")
 set(HASH_TEST_SRCS         "${CMAKE_SOURCE_DIR}/test/hash_test.cc")
 set(HEAP_TEST_SRCS         "${CMAKE_SOURCE_DIR}/test/heap_test.cc")
+set(SCHEDULER_TEST_SRCS         "${CMAKE_SOURCE_DIR}/test/scheduler_test.cc")
 #test executables
 add_executable(sort_test         ${SORT_TEST_SRCS})
 add_executable(select_test       ${SELECT_TEST_SRCS})
@@ -42,6 +45,7 @@ add_executable(dynamic_list_test ${DYNAMIC_LIST_TEST_SRCS})
 add_executable(graph_test        ${GRAPH_TEST_SRCS})
 add_executable(hash_test         ${HASH_TEST_SRCS})
 add_executable(heap_test         ${HEAP_TEST_SRCS})
+add_executable(scheduler_test    ${SCHEDULER_TEST_SRCS})
 
 add_dependencies(sort_test googletest)
 add_dependencies(select_test googletest)
@@ -49,12 +53,14 @@ add_dependencies(dynamic_list_test googletest)
 add_dependencies(graph_test googletest)
 add_dependencies(hash_test googletest)
 add_dependencies(heap_test googletest)
+add_dependencies(scheduler_test googletest)
 target_link_libraries(sort_test sort gtest pthread)
 target_link_libraries(select_test select gtest pthread)
 target_link_libraries(dynamic_list_test dynamic_list gtest pthread)
 target_link_libraries(graph_test graph gtest pthread)
 target_link_libraries(hash_test gtest pthread)
 target_link_libraries(heap_test gtest pthread)
+target_link_libraries(scheduler_test scheduler gtest pthread)
 
 #SPECIFIC PROBLEM SOLVERS
 set(MIN_CUT_FINDER_SRCS "${CMAKE_SOURCE_DIR}/src/min_cut_finder")
