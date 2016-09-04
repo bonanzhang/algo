@@ -34,8 +34,8 @@ class Scheduler {
     //for the pqueue, if compare(a,b) is true, a goes to the bottom of the heap
     //in this case, the job with the smaller w/l ratio goes to the bottom,
     //making this a max heap for w/l ratios
-    typedef std::priority_queue<Job, std::vector<Job>, JobComparator> max_heap;
     private:
+        typedef std::priority_queue<Job, std::vector<Job>, JobComparator> max_heap;
         max_heap queue_;
     public:
         void addJob(Job j);
