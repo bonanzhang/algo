@@ -27,6 +27,14 @@ class Job {
 class JobComparator {
     public:
         bool operator()(Job a, Job b) {
+//            //example of a incorrect greedy algorithm
+//            long val_a = a.getWeight() - a.getLength();
+//            long val_b = b.getWeight() - b.getLength();
+//            if (val_a == val_b) {
+//                return a.getWeight() < b.getWeight();
+//            } else {
+//                return val_a < val_b;
+//            }
             return ((float) a.getWeight()) / a.getLength() < ((float) b.getWeight()) / b.getLength();
         }
 };
