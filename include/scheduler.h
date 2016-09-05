@@ -9,17 +9,17 @@ class Job {
             weight_ = 1.0f;
             length_ = 1.0f;
         }
-        Job(float w, float l) {
+        Job(long w, long l) {
             weight_ = w;
             length_ = l;
         }
-        float getLength() const;
-        float getWeight() const;
+        long getLength() const;
+        long getWeight() const;
         friend std::ostream & operator<<(std::ostream &os, const Job &j);
         bool operator==(const Job &j) const;
     private:
-        float length_;
-        float weight_;
+        long length_;
+        long weight_;
 };
 //a job with the highest priority has the highest weight/length ratio
 //intuitively, jobs with equal lengths, but different weights, the highest weights go first
@@ -27,7 +27,7 @@ class Job {
 class JobComparator {
     public:
         bool operator()(Job a, Job b) {
-            return a.getWeight() / a.getLength() < b.getWeight() / b.getLength();
+            return ((float) a.getWeight()) / a.getLength() < ((float) b.getWeight()) / b.getLength();
         }
 };
 class Scheduler {

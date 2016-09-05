@@ -2,12 +2,12 @@
 #include <gtest/gtest.h>
 TEST(SchedulerTest, HandlesCommonCase) {
     Scheduler s;
-    s.addJob(Job(1.0f, 2.0f));
-    s.addJob(Job(1.0f, 3.0f));
-    s.addJob(Job(1.0f, 1.0f));
-    ASSERT_EQ(s.getJob(), Job(1.0f, 1.0f));
-    ASSERT_EQ(s.getJob(), Job(1.0f, 2.0f));
-    ASSERT_EQ(s.getJob(), Job(1.0f, 3.0f));
+    s.addJob(Job(1, 2));
+    s.addJob(Job(1, 3));
+    s.addJob(Job(1, 1));
+    ASSERT_EQ(s.getJob(), Job(1, 1));
+    ASSERT_EQ(s.getJob(), Job(1, 2));
+    ASSERT_EQ(s.getJob(), Job(1, 3));
 }
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

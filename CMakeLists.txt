@@ -76,3 +76,7 @@ set(SHORTEST_PATH_FINDER_SRCS "${CMAKE_SOURCE_DIR}/src/shortest_path_finder.cc")
 include_directories(${Boost_INCLUDE_DIR})
 add_executable(shortest_path_finder ${SHORTEST_PATH_FINDER_SRCS})
 target_link_libraries(shortest_path_finder graph ${Boost_LIBRARIES})
+
+set(JOB_TIMER_SRCS  "${CMAKE_SOURCE_DIR}/src/job_timer.cc")
+add_executable(job_timer ${JOB_TIMER_SRCS})
+target_link_libraries(job_timer scheduler)

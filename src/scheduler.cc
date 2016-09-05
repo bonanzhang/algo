@@ -1,8 +1,8 @@
 #include "scheduler.h"
-float Job::getLength() const {
+long Job::getLength() const {
     return this->length_;
 }
-float Job::getWeight() const {
+long Job::getWeight() const {
     return this->weight_;
 }
 std::ostream & operator<<(std::ostream & os, const Job &j) {
